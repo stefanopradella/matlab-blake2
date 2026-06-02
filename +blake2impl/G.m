@@ -1,7 +1,7 @@
 function v = G(v, a, b, c, d, x, y)
 % Mixing function G, RFC 7693 - 3.1
 % BLAKE2b rotation constants are hardcoded
-% Fixed-point is used instead of uint64 to avoid saturation on addition
+
     arguments
         v                   (16, 1) uint64
         a, b, c, d, x, y    (1, 1)  uint64
