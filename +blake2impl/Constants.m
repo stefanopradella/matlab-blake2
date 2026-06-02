@@ -1,4 +1,4 @@
-classdef Blake2_Constants
+classdef Constants
 
     properties (Constant)
 
