@@ -26,5 +26,5 @@ function digest = blake2(d, ll, kk, nn, params)
     t = blake2impl.incrementCounter(t, mod(ll, (dd-1)*params.bb));
     h = blake2impl.F(h, d(:, dd), t, true, params);
 
-    digest = typecast(h(end-(nn/8)+1:end), 'uint8');
+    digest = blake2impl.bytesToHex(char(typecast(h(end-(nn/8)+1:end), 'uint8')));
 end

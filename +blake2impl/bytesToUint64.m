@@ -1,8 +1,8 @@
-function words = asciiStringToUint64(text, outputSize)
-% asciiStringToUint64 Convert ASCII text to outputSize uint64 words.
+function words = bytesToUint64(text, outputSize)
+% asciiStringToUint64 Convert text or uint8 data to uint64 words
 %
 % Example:
-%   dec2hex(blake2impl.asciiStringToUint64("abc", 1), 16)
+%   dec2hex(blake2impl.bytesToUint64("abc", 1), 16)
 %   % returns "0000000000636261"
 
     arguments
