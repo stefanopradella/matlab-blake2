@@ -6,20 +6,20 @@ function z = add64(x, y)
         y   (:, 1)  uint64
     end
 
-    base = 4294967296;
-    mask = uint64(base - 1);
+    mask = uint64(0xFFFFFFFF);
 
     xLo = bitand(x, mask);
     yLo = bitand(y, mask);
-    loSum = double(xLo) + double(yLo);
-    carry = loSum >= base;
-    lo = uint64(loSum - double(carry) * base);
+
+    loSum = xLo + yLo;
+    carry = loSum > mask;
+    lo = bitand(loSum, mask);
 
     xHi = bitshift(x, -32);
     yHi = bitshift(y, -32);
-    hiSum = double(xHi) + double(yHi) + double(carry);
-    hi = uint64(hiSum - floor(hiSum / base) * base);
+
+    hiSum = xHi + yHi + uint64(carry);
+    hi = bitand(hiSum, mask);
 
     z = bitor(bitshift(hi, 32), lo);
-
 end
