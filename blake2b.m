@@ -1,0 +1,36 @@
+function digest = blake2b(inputData, nn, key)
+% blake2b - Compute the nn-bytes hash of inputData using BLAKE2b algorithm
+% 
+% Syntax: 
+%   digest = BLAKE2B(inputData)
+%   digest = BLAKE2B(inputData, nn)
+%   digest = BLAKE2B(inputData, nn, key)
+% 
+% Input Arguments
+%   inputData - Input array
+%       string | char array | uint8
+%   nn - Digest length in bytes
+%       positive integer scalar between 1 and 64 (default)
+%   key - Key array
+%       string | char array | uint8
+% 
+% Reference: 
+%   https://datatracker.ietf.org/doc/html/rfc7693.html
+
+    arguments
+        inputData   (:, 1)  char
+        nn          (1, 1)  uint8 = 64
+        key         (:, 1)  uint8 = [] 
+    end
+
+    ll      = numel(inputData);
+    kk      = numel(key);
+
+    
+    params  = blake2impl.Constants.BLAKE2b;
+
+    d = blake2impl.bytesToUint64(inputData, 16);
+    d = [blake2impl.bytesToUint64(key, 16), d];
+
+    digest  = blake2impl.blake2(d, ll, kk, nn, params);
+end
