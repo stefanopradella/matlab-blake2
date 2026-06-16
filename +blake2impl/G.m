@@ -1,29 +1,30 @@
-function v = G(v, a, b, c, d, x, y, R)
+function v = G(v, a, b, c, d, x, y, R, addFcn, rorFcn)
 % Mixing function G, RFC 7693 - 3.1
-% BLAKE2b rotation constants are hardcoded
 
     arguments
-        v                   (16, 1) uint64
+        v                   (16, 1) {mustBeInteger}
         a, b, c, d          (1, 1)  uint8
-        x, y                (1, 1)  uint64
+        x, y                (1, 1)  {mustBeInteger}
         R                   (4, 1)  uint8
+        addFcn              (1, 1)  function_handle
+        rorFcn              (1, 1)  function_handle
     end
 
-    v(a) = blake2impl.add64(v(a), v(b));
-    v(a) = blake2impl.add64(v(a), x);
+    v(a) = addFcn(v(a), v(b));
+    v(a) = addFcn(v(a), x);
     v(d) = bitxor(v(d), v(a));
-    v(d) = blake2impl.ror64(v(d), R(1));
+    v(d) = rorFcn(v(d), R(1));
 
-    v(c) = blake2impl.add64(v(c), v(d));
+    v(c) = addFcn(v(c), v(d));
     v(b) = bitxor(v(b), v(c));
-    v(b) = blake2impl.ror64(v(b), R(2));
+    v(b) = rorFcn(v(b), R(2));
 
-    v(a) = blake2impl.add64(v(a), v(b));
-    v(a) = blake2impl.add64(v(a), y);
+    v(a) = addFcn(v(a), v(b));
+    v(a) = addFcn(v(a), y);
     v(d) = bitxor(v(d), v(a));
-    v(d) = blake2impl.ror64(v(d), R(3));
+    v(d) = rorFcn(v(d), R(3));
 
-    v(c) = blake2impl.add64(v(c), v(d));
+    v(c) = addFcn(v(c), v(d));
     v(b) = bitxor(v(b), v(c));
-    v(b) = blake2impl.ror64(v(b), R(4));
+    v(b) = rorFcn(v(b), R(4));
 end
