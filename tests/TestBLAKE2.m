@@ -33,5 +33,16 @@ classdef TestBLAKE2 < matlab.unittest.TestCase
 
             testCase.verifyEqual(digest, expectedValue);
         end
+
+        function BLAKE2s_256_abc_keyed(testCase)
+
+            inputData       = 'abc';
+            key             = 'qwerty';
+            expectedValue   = '18924839C62B0525DBA245F497EFCE620E9890DD2843557359CA5B0F7ED7470D';
+            
+            digest = blake2s(inputData, 32, key);
+
+            testCase.verifyEqual(digest, expectedValue);
+        end
     end
 end
