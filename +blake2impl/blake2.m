@@ -8,6 +8,10 @@ function digest = blake2(d, ll, kk, nn, params)
         params              (1, 1)  struct
     end
 
+    if isempty(d)
+        d = zeros(16, 1, "uint"+num2str(params.w));
+    end
+
     dd      =   size(d, 2);
     t       =   zeros(2, 1, "uint"+num2str(params.w));          % Counter
     h       =   params.IV;
@@ -24,9 +28,17 @@ function digest = blake2(d, ll, kk, nn, params)
     end
 
     % Final block
-    t = blake2impl.incrementCounter(t, mod(ll, (dd-1)*params.bb));
+    finalBlockBytes = mod(ll, params.bb);
+    if finalBlockBytes == 0
+        if ll > 0 || kk > 0
+            finalBlockBytes = params.bb;
+        else
+            finalBlockBytes = 0;
+        end
+    end
+    t = blake2impl.incrementCounter(t, finalBlockBytes);
     h = blake2impl.F(h, d(:, dd), t, true, params);
 
     h_bytes = typecast(h, 'uint8');
-    digest = h_bytes(end-nn+1:end);
+    digest = h_bytes(1:nn);
 end

@@ -11,25 +11,31 @@ function words = bytesToWordVector(inputData, N, outputSize)
         outputSize      (1, 1)  double {mustBeInteger, mustBeNonnegative}
     end
 
-    if isempty(inputData)
-        words = [];
+    bytesPerWord = N/8;
+    bytesPerBlock = bytesPerWord * outputSize;
+    inputBytes = uint8(inputData(:).');
+
+    if isempty(inputBytes)
+        words = zeros(outputSize, 0, "uint"+num2str(N));
         return
     end
-    
-    bytesPerWord = N/8;
-    inputBytes = uint8(inputData(:).');
-    nBytes = bytesPerWord * outputSize;
+
+    nBlocks = ceil(numel(inputBytes) / bytesPerBlock);
+    nBytes = bytesPerBlock * nBlocks;
 
     paddedBytes = zeros(1, nBytes, "uint8");
     paddedBytes(1:numel(inputBytes)) = inputBytes;
 
-    words = zeros(outputSize, 1, "uint"+num2str(N));
-    for wordIndex = 1:outputSize
-        byteOffset = bytesPerWord * (wordIndex - 1);
-        for byteIndex = 1:bytesPerWord
-            shift = 8 * (byteIndex - 1);
-            words(wordIndex) = bitor(words(wordIndex), ...
-                bitshift(cast(paddedBytes(byteOffset + byteIndex), 'like', words), shift, "uint"+num2str(N)));
+    words = zeros(outputSize, nBlocks, "uint"+num2str(N));
+    for blockIndex = 1:nBlocks
+        blockOffset = bytesPerBlock * (blockIndex - 1);
+        for wordIndex = 1:outputSize
+            byteOffset = blockOffset + bytesPerWord * (wordIndex - 1);
+            for byteIndex = 1:bytesPerWord
+                shift = 8 * (byteIndex - 1);
+                words(wordIndex, blockIndex) = bitor(words(wordIndex, blockIndex), ...
+                    bitshift(cast(paddedBytes(byteOffset + byteIndex), 'like', words), shift, "uint"+num2str(N)));
+            end
         end
     end
 end
