@@ -1,5 +1,7 @@
 # matlab-blake2
 
+[![View matlab-blake2 on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://it.mathworks.com/matlabcentral/fileexchange/184162-matlab-blake2)
+
 MATLAB-native implementation of the BLAKE2 hashing algorithm based on [RFC 7693](https://datatracker.ietf.org/doc/html/rfc7693.html).
 Supports BLAKE2b and BLAKE2s, configurable digest length, and optional keyed hashing.
 
