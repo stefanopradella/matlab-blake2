@@ -39,5 +39,5 @@ function digest = blake2s(inputData, nn, key)
     d = blake2impl.bytesToWordVector(inputData, params.w, 16);
     d = [blake2impl.bytesToWordVector(key, params.w, 16), d];
 
-    digest  = blake2impl.bytesToHex(blake2impl.blake2(d, ll, kk, nn, params));
+    digest  = blake2impl.blake2(d, ll, kk, nn, params);
 end

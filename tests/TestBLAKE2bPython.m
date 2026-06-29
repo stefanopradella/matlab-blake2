@@ -22,7 +22,7 @@ classdef TestBLAKE2bPython < matlab.unittest.TestCase
                 messageBytes    =   testCase.getRandomBytes(stream, messageSizes(testIndex));
                 digestSize      =   randi(stream, [1 64], 1, 1);
 
-                digest          =   blake2b(char(messageBytes.'), digestSize);
+                digest          =   blake2impl.bytesToHex(blake2b(char(messageBytes.'), digestSize));
                 expectedDigest  =   testCase.pythonBlake2b(hashlib, messageBytes, digestSize);
 
                 testCase.verifyEqual(digest, expectedDigest, ...
@@ -44,7 +44,7 @@ classdef TestBLAKE2bPython < matlab.unittest.TestCase
                 keyBytes        =   testCase.getRandomBytes(stream, randi(stream, [1, 64], 1, 1));
                 digestSize      =   uint8(randi(stream, [1, 64], 1, 1));
 
-                digest          =   blake2b(char(messageBytes.'), digestSize, char(keyBytes.'));
+                digest          =   blake2impl.bytesToHex(blake2b(char(messageBytes.'), digestSize, char(keyBytes.')));
                 expectedDigest  =   testCase.pythonBlake2b(hashlib, messageBytes, digestSize, keyBytes);
 
                 testCase.verifyEqual(digest, expectedDigest, ...

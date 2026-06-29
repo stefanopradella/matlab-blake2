@@ -9,7 +9,7 @@ classdef TestBLAKE2 < matlab.unittest.TestCase
             
             digest = blake2b(inputData);
 
-            testCase.verifyEqual(digest, expectedValue);
+            testCase.verifyEqual(blake2impl.bytesToHex(digest), expectedValue);
         end
 
         function BLAKE2b_512_abc_keyed(testCase)
@@ -20,7 +20,7 @@ classdef TestBLAKE2 < matlab.unittest.TestCase
 
             digest = blake2b(inputData, 64, key);
 
-            testCase.verifyEqual(digest, expectedValue);
+            testCase.verifyEqual(blake2impl.bytesToHex(digest), expectedValue);
         end
 
         function BLAKE2s_256_abc_unkeyed(testCase)
@@ -31,7 +31,7 @@ classdef TestBLAKE2 < matlab.unittest.TestCase
             
             digest = blake2s(inputData);
 
-            testCase.verifyEqual(digest, expectedValue);
+            testCase.verifyEqual(blake2impl.bytesToHex(digest), expectedValue);
         end
 
         function BLAKE2s_256_abc_keyed(testCase)
@@ -42,7 +42,7 @@ classdef TestBLAKE2 < matlab.unittest.TestCase
             
             digest = blake2s(inputData, 32, key);
 
-            testCase.verifyEqual(digest, expectedValue);
+            testCase.verifyEqual(blake2impl.bytesToHex(digest), expectedValue);
         end
     end
 end

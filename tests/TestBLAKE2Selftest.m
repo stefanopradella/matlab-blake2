@@ -20,7 +20,6 @@ classdef TestBLAKE2Selftest < matlab.unittest.TestCase
 
     methods (Test)
         function BLAKE2b_selftest(testCase)
-            % digest = TestBLAKE2Selftest.blake2b_selftest_digest();
             hashBytes = zeros(1, ...
                 2 * numel(TestBLAKE2Selftest.b2b_in_len) * sum(TestBLAKE2Selftest.b2b_md_len), ...
                 'uint8');
@@ -35,15 +34,13 @@ classdef TestBLAKE2Selftest < matlab.unittest.TestCase
                     inputBytes = TestBLAKE2Selftest.selftest_seq(inlen, inlen);
 
                     % Unkeyed hash
-                    md = blake2b(inputBytes, outlen);
-                    mdBytes = TestBLAKE2Selftest.hexToBytes(md);
+                    mdBytes = blake2b(inputBytes, outlen);
                     hashBytes(hashIndex:(hashIndex + outlen - 1)) = mdBytes;
                     hashIndex = hashIndex + outlen;
 
                     % Keyed hash
                     keyBytes = TestBLAKE2Selftest.selftest_seq(outlen, outlen);
-                    md = blake2b(inputBytes, outlen, keyBytes);
-                    mdBytes = TestBLAKE2Selftest.hexToBytes(md);
+                    mdBytes = blake2b(inputBytes, outlen, keyBytes);
                     hashBytes(hashIndex:(hashIndex + outlen - 1)) = mdBytes;
                     hashIndex = hashIndex + outlen;
                 
@@ -52,7 +49,7 @@ classdef TestBLAKE2Selftest < matlab.unittest.TestCase
 
             digest = blake2b(hashBytes, 32);
 
-            testCase.verifyEqual(digest, blake2impl.bytesToHex(testCase.blake2b_res));
+            testCase.verifyEqual(blake2impl.bytesToHex(digest), blake2impl.bytesToHex(testCase.blake2b_res));
         end
 
         function BLAKE2s_selftest(testCase)
@@ -70,15 +67,13 @@ classdef TestBLAKE2Selftest < matlab.unittest.TestCase
                     inputBytes = TestBLAKE2Selftest.selftest_seq(inlen, inlen);
 
                     % Unkeyed hash
-                    md = blake2s(inputBytes, outlen);
-                    mdBytes = TestBLAKE2Selftest.hexToBytes(md);
+                    mdBytes = blake2s(inputBytes, outlen);
                     hashBytes(hashIndex:(hashIndex + outlen - 1)) = mdBytes;
                     hashIndex = hashIndex + outlen;
 
                     % Keyed hash
                     keyBytes = TestBLAKE2Selftest.selftest_seq(outlen, outlen);
-                    md = blake2s(inputBytes, outlen, keyBytes);
-                    mdBytes = TestBLAKE2Selftest.hexToBytes(md);
+                    mdBytes = blake2s(inputBytes, outlen, keyBytes);
                     hashBytes(hashIndex:(hashIndex + outlen - 1)) = mdBytes;
                     hashIndex = hashIndex + outlen;
                 
@@ -87,7 +82,7 @@ classdef TestBLAKE2Selftest < matlab.unittest.TestCase
 
             digest = blake2s(hashBytes, 32);
 
-            testCase.verifyEqual(digest, blake2impl.bytesToHex(testCase.blake2s_res));
+            testCase.verifyEqual(blake2impl.bytesToHex(digest), blake2impl.bytesToHex(testCase.blake2s_res));
         end
     end
 
@@ -106,10 +101,6 @@ classdef TestBLAKE2Selftest < matlab.unittest.TestCase
 
                 out(i) = uint8(bitshift(t, -24));
             end
-        end
-
-        function bytes = hexToBytes(hex)
-            bytes = uint8(sscanf(hex, '%2x').');
         end
     end
 end
